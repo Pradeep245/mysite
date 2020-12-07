@@ -1,0 +1,81 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+    <div class="col-md-10 py-5 mt-5 mx-5">
+        
+
+        <!-- Blog Post -->
+        {% if user.is_authenticated %}
+        {% for post in blog_posts  %}
+        <div class="card mb-4 shadow-lg mt-2">
+          <img class="card-img-top" src="{{post.img.url}}" alt="Card image cap">
+          <div class="card-body">
+            <h2 class="card-title">{{post.title}}</h2>
+            <p class="card-text">{{post.text | safe |truncatechars:100}}</p>
+            <a href="{% url 'full_view' post.pk %}" class="btn btn-primary">Read More &rarr;</a>
+          </div>
+          <div class="card-footer text-muted">
+            Posted on {{post.date}} by 
+            <a href="#">{{post.author}}</a>
+          </div>
+        </div>
+        {% endfor %}
+
+        
+
+        <!-- Pagination -->
+      {% if is_paginated %}
+        <ul class="pagination justify-content-center mb-4">
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&larr; Older</a>
+          </li>
+          {% endif %}
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Newer &rarr;</a>
+          </li>
+          {% endif %}
+        </ul>
+      {% endif %}
+
+      </div>
+      {% else %}
+      
+{% block cont %}
+    <div id="content-container" class="col-12 col-sm-6 col-md-3">
+        <div class="row justify-content-center">
+        {% block title %}
+        {% endblock %}
+            <form id="login-form" method="post" 
+                  action="{% url 'login' %}" class="form-container1">
+                {% csrf_token %}
+                <table class="table">
+                    <tr>
+                        <td><label for="id_username">Username</label></td>
+                        <td><input id="id_username" name="username" 
+                                   type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="id_password">Password</label></td>
+                        <td><input id="id_password" name="password" 
+                                   type="password" class="form-control"></td>
+                    </tr>
+                </table>
+                {% if form.errors %}
+                    <p class=" label label-danger">
+                        Your username and password didn't match. 
+                        Please try again.
+                    </p>
+                {% endif %}
+
+                <input type="submit" value="Login" 
+                       class="btn btn-primary pull-right px-5" />
+                <input type="hidden" name="next" value="{{ next }}" />
+            </form>
+        </div>
+    </div>
+{% endblock cont %}
+    {% endif %}
+{% endblock %}

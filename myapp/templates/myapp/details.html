@@ -1,0 +1,26 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+    <div class="col-lg-10 py-5 mt-5">
+        
+
+        <!-- Blog Post -->
+        <div class="card mb-4 shadow-lg mt-2">
+          <img class="card-img-top" src="{{object.img.url}}" alt="Card image cap">
+          <div class="card-body">
+            <h2 class="card-title">{{object.title}}</h2>
+            <p class="card-text">{{object.text | safe | linebreaks}}</p>
+          </div>
+          <div class="card-footer text-muted">
+            Posted on {{object.date}} by 
+            <a href="#">{{object.author}}</a>
+          </div>
+        </div>
+
+        
+
+
+      </div>
+
+{% endblock %}

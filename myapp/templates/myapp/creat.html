@@ -1,0 +1,39 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+    <div class="col-md-12">
+        
+        {% if user.is_authenticated %}
+        <!-- Blog Post -->
+        <div class="card mb-4 mt-5">
+          <div class="card-header">
+          Create Blog Post
+          </div>
+          <div class="card-body">
+          <form method="post" action="." enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{form.media}}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-primary">Add post</button>
+          </form>
+          </div>
+        </div>
+        {% else %}
+
+          <div class="container">
+            <div class="jumbotron">
+                <h1>you're not logged in</h1>
+    
+            </div>
+  
+          </div>
+
+        {% endif %}
+
+        
+
+
+    </div>
+
+{% endblock %}
